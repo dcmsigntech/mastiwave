@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MastiWave — Affordable OTT Streaming</title>
+  <meta name="description" content="MastiWave — Stream movies, originals, and music. Simple, low-cost plans." />
+  <link rel="icon" href="/assets/favicon.png">
+  <style>
+    :root{
+      --accent:#ff6a00; --accent2:#ff884d; --muted:#a0a9b4; --max:1200px;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;color:#f0f4f9;line-height:1.5;min-height:100vh}
+    a{text-decoration:none;color:inherit}
+    .wrap{max-width:1200px;margin:0 auto;padding:28px}
+
+    header{position:sticky;top:0;background:rgba(10,13,21,0.65);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,0.06);z-index:60}
+    .nav{display:flex;align-items:center;gap:18px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
+    .logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:900;color:#081018}
+    nav{margin-left:20px;display:none}
+    .nav-actions{margin-left:auto;display:flex;gap:10px;align-items:center}
+    .btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#081018;padding:9px 14px;border-radius:10px;font-weight:700}
+    .ghost{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+    @media(min-width:880px){nav{display:flex}}
+
+    main{padding-top:18px}
+
+    /* shared hero & cards */
+    .hero{display:grid;gap:22px;align-items:center;padding:36px 0;grid-template-columns:1fr;position:relative;overflow:hidden;border-radius:12px}
+    .hero-inner{padding:18px;position:relative;z-index:2}
+    .hero .badge{display:inline-block;background:rgba(0,0,0,0.35);padding:6px 10px;border-radius:999px;font-weight:700;color:var(--accent);margin-bottom:10px}
+    h1{font-size:clamp(28px,4.5vw,48px);margin:0}
+    p.lead{color:var(--muted);max-width:720px;margin:8px 0 0 0;font-size:16px}
+    .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:20px;z-index:2;position:relative}
+    .card{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* catalog */
+    .catalog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
+    .content-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.04)}
+    .content-card img{width:100%;height:140px;object-fit:cover;display:block}
+    .content-card .body{padding:10px}
+
+    /* pricing */
+    .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:22px}
+    .plan{background:rgba(255,255,255,0.02);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.04)}
+    .plan.popular{outline:2px solid var(--accent);box-shadow:0 8px 26px rgba(255,106,0,0.12)}
+    .price{font-size:26px;font-weight:800;color:var(--accent)}
+
+    /* difference table */
+    .compare{margin-top:26px;overflow:auto}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:10px;border-bottom:1px solid rgba(255,255,255,0.06);text-align:left}
+    th{color:var(--muted);font-size:13px}
+
+    footer{margin-top:40px;padding:22px 0;border-top:1px solid rgba(255,255,255,0.06);color:var(--muted);font-size:14px;text-align:center}
+
+    /* Background themes - classes applied to body */
+    /* Option A - Cinematic Gradient + Spotlight */
+    .theme-cinematic{background:radial-gradient(circle at 30% 20%, rgba(255,106,0,0.12), transparent 12%), radial-gradient(circle at 70% 80%, rgba(120,80,200,0.06), transparent 20%), #06060a; color:#f6f8fb}
+    .theme-cinematic .hero{box-shadow:0 8px 40px rgba(2,6,23,0.6);border-radius:14px;padding:28px}
+
+    /* Option B - Dynamic Waves (CSS animated) */
+    .theme-waves{background:linear-gradient(135deg,#071025 0%, #071018 40%, #0f1724 100%);color:#eaf2ff;overflow-x:hidden}
+    .wave-anim{position:fixed;left:50%;top:60%;width:160%;height:80vh;transform:translateX(-50%);z-index:0;opacity:0.12;background:radial-gradient(circle at 20% 30%, rgba(255,106,0,0.16), transparent 15%), radial-gradient(circle at 80% 70%, rgba(255,136,77,0.12), transparent 15%);filter:blur(40px);animation: drift 18s linear infinite}
+    @keyframes drift{0%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-52%) translateY(40px)}100%{transform:translateX(-50%) translateY(0)}}
+
+    /* Option C - Gradient Mesh (colorful) */
+    .theme-mesh{background:radial-gradient(circle at 10% 20%, rgba(255,106,0,0.12), transparent 10%), radial-gradient(circle at 80% 0%, rgba(123,47,247,0.08), transparent 15%), radial-gradient(circle at 0% 80%, rgba(0,212,255,0.06), transparent 12%), #071018;color:#f8fbff}
+
+    /* responsive tweaks */
+    @media(min-width:900px){.hero{grid-template-columns:1fr 420px} .hero-inner{padding:28px}}
+    @media(max-width:520px){.wrap{padding:16px} .logo{width:36px;height:36px} .aside{display:none}}
+
+    /* theme switcher styles */
+    .theme-switch{display:flex;gap:8px;align-items:center}
+    .theme-dot{width:12px;height:12px;border-radius:50%;cursor:pointer;border:2px solid rgba(255,255,255,0.08)}
+    .dot-cinematic{background:linear-gradient(135deg,var(--accent),var(--accent2))}
+    .dot-waves{background:linear-gradient(135deg,#1f3a6e,#0fb9d2)}
+    .dot-mesh{background:linear-gradient(135deg,#7b2ff7,#00d4ff)}
+  </style>
+  <!-- Razorpay (demo) -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body class="theme-cinematic">
+  <header>
+    <div class="wrap nav">
+      <div class="brand"><div class="logo">M</div>MastiWave</div>
+      <nav>
+        <a href="#features" class="ghost">Features</a>
+        <a href="#catalog" class="ghost">Collections</a>
+        <a href="#difference" class="ghost">Why Us</a>
+        <a href="#contact" class="ghost">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="theme-switch" title="Change background theme" aria-label="Theme switcher">
+          <div class="theme-dot dot-cinematic" data-theme="cinematic" onclick="setTheme('cinematic')" aria-hidden></div>
+          <div class="theme-dot dot-waves" data-theme="waves" onclick="setTheme('waves')" aria-hidden></div>
+          <div class="theme-dot dot-mesh" data-theme="mesh" onclick="setTheme('mesh')" aria-hidden></div>
+        </div>
+        <a class="ghost" href="#">Sign in</a>
+        <a class="btn" href="#catalog">Subscribe</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="hero-inner">
+        <span class="badge">New • Intro Offer</span>
+        <h1>Entertainment Reimagined with <span style="color:var(--accent)">MastiWave</span></h1>
+        <p class="lead">Affordable OTT streaming with movies, series, music sessions and more. Mobile-first, lightweight player, and simple pricing.</p>
+        <div class="cta-row">
+          <a class="btn" href="#catalog" onclick="subscribe('yearly')">Start Free Trial</a>
+          <a class="ghost" href="#catalog">See Collections</a>
+        </div>
+
+        <div class="features" id="features" style="margin-top:18px">
+          <div class="card"><h3>Curated Local Content</h3><div class="muted">Handpicked films and music sessions tuned for regional tastes.</div></div>
+          <div class="card"><h3>Low-bandwidth Mode</h3><div class="muted">Adaptive streaming and smaller bitrate profiles for mobile networks.</div></div>
+          <div class="card"><h3>Fast Discovery</h3><div class="muted">Smart categories, keywords, and playlists to find content fast.</div></div>
+          <div class="card"><h3>Secure Payments</h3><div class="muted">Razorpay integration for safe and local-friendly checkout.</div></div>
+        </div>
+      </div>
+
+      <aside class="aside" style="padding:20px">
+        <div class="card" style="padding:12px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:800">Player Preview</div>
+            <div style="color:var(--muted);font-size:13px">Demo</div>
+          </div>
+          <div style="margin-top:8px" class="player-demo"><img src="https://picsum.photos/seed/player/800/450" alt="player demo"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+            <div><div style="font-weight:700">Try MastiWave</div><div class="muted">Monthly & Yearly plans</div></div>
+            <div><a class="btn" href="#pricing" onclick="subscribe('monthly')">Subscribe</a></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px;padding:12px">
+          <div style="font-weight:700">Contact</div>
+          <div class="muted" style="margin-top:6px">Email: contact@mastiwave.com<br>Phone: +91 99893 16836</div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="catalog">
+      <h2>Explore Our Collections</h2>
+      <p class="muted">Dive into curated collections across Movies, Series and Shows — updated weekly. Filter by genre or mood and discover something new.</p>
+
+      <div style="margin-top:18px;padding:18px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));position:relative;overflow:hidden;">
+        <svg style="position:absolute;right:-120px;top:-80px;opacity:0.06;transform:rotate(15deg)" width="520" height="520" viewBox="0 0 520 520" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#ff6a00"/><stop offset="1" stop-color="#ff884d"/></linearGradient>
+          </defs>
+          <circle cx="260" cy="260" r="200" fill="url(#g1)" />
+        </svg>
+
+        <div style="position:relative;z-index:2;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+          <div class="card content-card">
+            <img src="https://picsum.photos/seed/movies2/1200/800" alt="movies collection"/>
+            <div class="body">
+              <strong>Collection: Movies</strong>
+              <div class="muted">Action • Thriller • Drama • Comedy • Romance • Documentary • Family</div>
+            </div>
+          </div>
+
+          <div class="card content-card">
+            <img src="https://picsum.photos/seed/series2/1200/800" alt="series collection"/>
+            <div class="body">
+              <strong>Collection: Series</strong>
+              <div class="muted">Crime • Mystery • Sci‑Fi • Biography • Documentary • Slice of Life</div>
+            </div>
+          </div>
+
+          <div class="card content-card">
+            <img src="https://picsum.photos/seed/shows2/1200/800" alt="shows collection"/>
+            <div class="body">
+              <strong>Collection: Shows & Music</strong>
+              <div class="muted">Music • Talk • Travel • Reality • Live Sessions</div>
+            </div>
+          </div>
+
+          <div class="card content-card">
+            <img src="https://picsum.photos/seed/foryou2/1200/800" alt="for you"/>
+            <div class="body">
+              <strong>For You</strong>
+              <div class="muted">Personalized picks and trending choices based on your taste.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:14px;display:flex;justify-content:center">
+        <a class="ghost" href="#" style="padding:10px 18px;border-radius:10px" onclick="alert('Full catalog will be live next month — stay tuned and sign up for updates!')">Explore to know more — we will be live next month</a>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <h2>Pricing Plans</h2>
+      <p class="muted">Choose a plan that fits your needs. Cancel anytime.</p>
+      <div class="pricing-grid">
+        <div class="plan">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div><strong>Monthly</strong></div><div class="price">₹149</div></div>
+          <div class="muted" style="margin-top:8px">1 screen • Adaptive SD • Billed monthly</div>
+          <div class="plan-cta"><a class="btn" href="#" onclick="subscribe('monthly')">Subscribe</a></div>
+        </div>
+
+        <div class="plan popular">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div><strong>Yearly</strong></div><div class="price">₹799</div></div>
+          <div class="muted" style="margin-top:8px">1 screen • Adaptive SD • Billed yearly • Best Value</div>
+          <div class="plan-cta"><a class="btn" href="#" onclick="subscribe('yearly')">Choose Yearly</a></div>
+        </div>
+
+        <div class="plan">
+          <div style="display:flex;justify-content:space-between;align-items:center"><div><strong>Premium Add-on</strong></div><div class="price">+₹50</div></div>
+          <div class="muted" style="margin-top:8px">Ad-free • 2 screens • Offline downloads</div>
+          <div class="plan-cta"><a class="btn" href="#" onclick="subscribe('addon')">Add Premium</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="difference">
+      <h2>What Makes MastiWave Different</h2>
+      <div class="compare">
+        <table>
+          <thead>
+            <tr><th>Feature</th><th>MastiWave Advantage</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Pricing</td><td>Simple, transparent pricing built for value — monthly and yearly plans with an affordable premium add-on.</td></tr>
+            <tr><td>User Experience</td><td>Fast, minimal UI with quick discovery, curated playlists and local language support.</td></tr>
+            <tr><td>Accessibility</td><td>Optimized for low-bandwidth conditions and mobile-first playback.</td></tr>
+            <tr><td>Control & Privacy</td><td>Signed streaming links, secure payments, and user-controlled downloads.</td></tr>
+            <tr><td>Local Focus</td><td>Curated regional content and multilingual metadata for better discovery.</td></tr>
+            <tr><td>Scalable Tech</td><td>Built to plug into modern streaming providers (HLS/DASH, CDN-ready) so we can scale when you grow.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+        <div class="card"><h4 style="margin:0 0 8px 0">Curated Releases</h4><div class="muted">Handpicked lists and local premieres tailored for regional audiences.</div></div>
+        <div class="card"><h4 style="margin:0 0 8px 0">Smart Recommendations</h4><div class="muted">Lightweight personalization to surface the best content without heavy compute.</div></div>
+        <div class="card"><h4 style="margin:0 0 8px 0">Flexible Monetization</h4><div class="muted">Support for subscriptions, PPV and ad-free add-ons later on.</div></div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact & Support</h2>
+      <p class="muted">For support or business queries, email <a href="mailto:contact@mastiwave.com">contact@mastiwave.com</a> or call +91 99893 16836.</p>
+    </section>
+
+    <footer>
+      © <span id="yr"></span> MastiWave • All rights reserved
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Theme switcher
+    function setTheme(t){
+      document.body.classList.remove('theme-cinematic','theme-waves','theme-mesh');
+      if(t==='cinematic') document.body.classList.add('theme-cinematic');
+      if(t==='waves') document.body.classList.add('theme-waves');
+      if(t==='mesh') document.body.classList.add('theme-mesh');
+      // handle wave element
+      var existing = document.getElementById('waveElem');
+      if(t==='waves'){
+        if(!existing){
+          var w = document.createElement('div'); w.id='waveElem'; w.className='wave-anim';
+          document.body.appendChild(w);
+        }
+      } else {
+        if(existing) existing.remove();
+      }
+    }
+
+    // Razorpay integration (demo)
+    const RAZORPAY_KEY = \"rzp_test_YOUR_KEY\"; // replace with your key
+
+    function subscribe(plan) {
+      const map = { monthly: 14900, yearly: 79900, addon: 5000 };
+      const amount = map[plan] || 14900;
+      const options = {
+        key: RAZORPAY_KEY,
+        amount: amount,
+        currency: \"INR\",
+        name: \"MastiWave\",
+        description: plan === 'addon' ? \"Premium Add-on\" : (plan === 'yearly' ? \"Yearly Subscription\" : \"Monthly Subscription\"),
+        handler: function (response){
+          alert(\"Payment successful! Payment ID: \" + response.razorpay_payment_id + \"\\nReplace this alert with backend verification/webhook.\");
+        },
+        prefill: { name: \"\", email: \"\" }
+      };
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }
+
+    // initialize default theme
+    setTheme('cinematic');
+  </script>
+</body>
+</html>
